@@ -45,15 +45,12 @@ public class Monitor implements CommandLineRunner{
         JSONObject changedData = new JSONObject();
         String result = null;
 
-/*        for (String url : urls) {
+        for (String url : urls) {
             RealExDataResp realExDataResp  = restTemplate.getForObject(url, RealExDataResp.class);
             if (realExDataResp.getChange() != 0){
                 changedData.put(realExDataResp.getCode(), realExDataResp.getClose());
             }
-        }*/
-
-        changedData.put("AUDUSD",0.65);
-        changedData.put("AUDJPY",73.5);
+        }
 
         String changedDataString = changedData.toString();
         logger.info("Changed FXData:{}", changedDataString);
@@ -76,6 +73,7 @@ public class Monitor implements CommandLineRunner{
                 sender.sendFXDataMessage(message);
             }
 
+            /* Get Data once per minute */
             Thread.sleep(60000);
         }
     }
