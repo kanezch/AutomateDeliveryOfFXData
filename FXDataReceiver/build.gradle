@@ -1,0 +1,39 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.10.RELEASE")
+	}
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.1.10.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'idea'
+    id 'com.google.cloud.tools.jib' version '1.8.0'
+}
+
+bootJar {
+    baseName = 'fxdatareceiver'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.9.8'
+	compile group: 'org.apache.commons', name: 'commons-csv', version: '1.7'
+	compile group: 'org.json', name: 'json', version: '20190722'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+}
