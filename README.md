@@ -9,8 +9,6 @@ JAVA: 1.8
 
 
 
-![fx](/Users/kane/Desktop/fx.png)
-
 #### Step1 Create Docker images and network
 
 ```shell
