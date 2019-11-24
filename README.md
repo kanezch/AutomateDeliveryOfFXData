@@ -9,6 +9,10 @@ JAVA: 1.8
 
 
 
+#### Process
+
+![process](https://github.com/kanezch/AutomateDeliveryOfFXData/blob/master/process.png)
+
 #### Step1 Create Docker images and network
 
 ```shell
