@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 
 @Component
 public class Receiver {
@@ -16,15 +18,19 @@ public class Receiver {
     @Autowired
     EmailService emailService;
 
-    public void receiveMessage(String message) throws Exception{
+    public void receiveMessage(String message){
         logger.info("Receive message from rabbitmq:{}", message);
 
         JSONObject jsonObject = new JSONObject(message);
         String csvFilePath = CsvUtil.assembleCSVFilePath();
-        CsvUtil.createCSV(jsonObject, csvFilePath);
+
+        try{
+            CsvUtil.createCSV(jsonObject, csvFilePath);
+        }catch (IOException e){
+            logger.error(e.getMessage());
+        }
 
         logger.info("Send Email to {} with attachment.", EMAIL_ADDRESS);
-        System.out.println("system.out.println EMAIL_ADDRESS:"+ EMAIL_ADDRESS);
         emailService.sendMessageWithAttachment(EMAIL_ADDRESS,
                                                "FXData change",
                                                "The real-time changed FXData has been attached to this email.",

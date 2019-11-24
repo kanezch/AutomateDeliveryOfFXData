@@ -2,12 +2,6 @@ package com.kane.FXDataMonitor;
 
 import java.io.Serializable;
 
-/**
- * Created by
- *
- * @author kane
- * @date 22/11/19
- */
 public class RealExDataResp implements Serializable {
 
     private String code;

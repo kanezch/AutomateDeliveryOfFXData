@@ -46,7 +46,7 @@ public class FXDataReceiverApplication {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         SpringApplication.run(FXDataReceiverApplication.class, args);
     }
 }

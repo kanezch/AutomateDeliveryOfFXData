@@ -4,6 +4,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class CsvUtil {
         return csvFilePathBuilder.toString();
     }
 
-    public static void createCSV(JSONObject message, String csvFilePath) throws Exception{
+    public static void createCSV(JSONObject message, String csvFilePath) throws IOException{
 
         logger.info("Creat csv: message={}, path={}", message.toString(), csvFilePath);
 

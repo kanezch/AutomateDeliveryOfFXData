@@ -3,9 +3,11 @@ package com.kane.FXDataMonitor;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +48,13 @@ public class Monitor implements CommandLineRunner{
         String result = null;
 
         for (String url : urls) {
-            RealExDataResp realExDataResp  = restTemplate.getForObject(url, RealExDataResp.class);
-            if (realExDataResp.getChange() != 0){
-                changedData.put(realExDataResp.getCode(), realExDataResp.getClose());
+            try {
+                RealExDataResp realExDataResp  = restTemplate.getForObject(url, RealExDataResp.class);
+                if (realExDataResp.getChange() != 0){
+                    changedData.put(realExDataResp.getCode(), realExDataResp.getClose());
+                }
+            }catch (RestClientException e){
+                logger.error("RestTemplate error:{}", e.getMessage());
             }
         }
 
@@ -63,7 +69,7 @@ public class Monitor implements CommandLineRunner{
     }
 
     @Override
-    public void run(String... args) throws Exception{
+    public void run(String... args){
         initURLs();
 
         for (;;){
@@ -74,7 +80,12 @@ public class Monitor implements CommandLineRunner{
             }
 
             /* Get Data once per minute */
-            Thread.sleep(60000);
+            try {
+                Thread.sleep(60000);
+            }
+            catch (InterruptedException e) {
+                logger.error(e.getMessage());
+            }
         }
     }
 }
