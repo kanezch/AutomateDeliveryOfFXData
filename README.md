@@ -9,9 +9,12 @@ JAVA: 1.8
 
 
 
+![fx](/Users/kane/Desktop/fx.png)
+
 #### Step1 Create Docker images and network
 
 ```shell
+#APITOKEN and EMAIL_ADDRESS are input through environment variables and I assume that the host for creating docker images is securely enough
 cd FXDataMonitor
 ./gradlew jibDockerBuild -Djib.container.environment=APITOKEN="5dd1e36b7af744.86050871" --image=kanezheng/fxdatamonitor:v1
 
