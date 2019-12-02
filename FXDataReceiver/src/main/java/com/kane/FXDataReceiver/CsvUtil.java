@@ -20,10 +20,9 @@ public class CsvUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(CsvUtil.class);
 
-    public static String assembleCSVFilePath(){
+    public static String assembleCSVFilePath(String currentTime){
 
-        DateTimeFormatter DateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
-        String currentTime = DateFormatter.format(LocalDateTime.now());
+
         StringBuilder csvFilePathBuilder = new StringBuilder();
         csvFilePathBuilder.append("/tmp/");
         csvFilePathBuilder.append("obsval_");
@@ -34,7 +33,7 @@ public class CsvUtil {
         return csvFilePathBuilder.toString();
     }
 
-    public static void createCSV(JSONObject message, String csvFilePath) throws IOException{
+    public static boolean createCSV(JSONObject message, String csvFilePath) {
 
         logger.info("Creat csv: message={}, path={}", message.toString(), csvFilePath);
 
@@ -50,8 +49,11 @@ public class CsvUtil {
             }
 
             csvPrinter.flush();
+            logger.info("Creat csv done.");
+            return true;
+        }catch (IOException e){
+            logger.error(e.getMessage());
         }
-
-        logger.info("Creat csv done.");
+        return false;
     }
 }

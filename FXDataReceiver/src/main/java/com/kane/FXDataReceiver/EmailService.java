@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,9 +21,9 @@ public class EmailService{
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     @Autowired
-    public JavaMailSender emailSender;
+    private JavaMailSender emailSender;
 
-    public void sendSimpleMessage(String to,
+    public boolean sendSimpleMessage(String to,
                                   String subject,
                                   String text) {
 
@@ -32,12 +33,14 @@ public class EmailService{
         message.setText(text);
         try {
             emailSender.send(message);
+            return true;
         }catch (MailException e){
             logger.error(e.getMessage());
         }
+        return false;
     }
 
-    public void sendMessageWithAttachment(String to,
+    public boolean sendMessageWithAttachment(String to,
                                           String subject,
                                           String text,
                                           String pathToAttachment) {
@@ -56,9 +59,13 @@ public class EmailService{
             emailSender.send(message);
 
             logger.info("Send email with attachment successfully.");
+            return true;
 
         } catch (MessagingException e) {
             logger.error(e.getMessage());
+        }catch (MailSendException e){
+            logger.error(e.getMessage());
         }
+        return false;
     }
 }

@@ -23,10 +23,14 @@ public class Monitor implements CommandLineRunner{
     private static final List<String> urls = new ArrayList<>();
     private static final String ApiToken = System.getenv().get("APITOKEN");
 
-    @Autowired
-    private Sender sender;
 
-    public Monitor(Sender sender) { this.sender = sender; }
+    private Sender sender;
+    private RestTemplate restTemplate;
+
+    @Autowired
+    public Monitor(Sender sender, RestTemplate restTemplate) {
+        this.sender = sender;
+        this.restTemplate = restTemplate;}
 
     private void initURLs(){
         for (int i = 0; i < currency.length; i++) {
@@ -43,14 +47,14 @@ public class Monitor implements CommandLineRunner{
     }
 
     private String fetchChangedFXData(){
-        RestTemplate restTemplate = new RestTemplate();
+
         JSONObject changedData = new JSONObject();
         String result = null;
 
         for (String url : urls) {
             try {
                 RealExDataResp realExDataResp  = restTemplate.getForObject(url, RealExDataResp.class);
-                if (realExDataResp.getChange() != 0){
+                if (realExDataResp != null && realExDataResp.getChange() != 0){
                     changedData.put(realExDataResp.getCode(), realExDataResp.getClose());
                 }
             }catch (RestClientException e){

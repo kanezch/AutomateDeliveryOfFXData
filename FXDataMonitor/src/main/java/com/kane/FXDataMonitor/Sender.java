@@ -19,13 +19,15 @@ public class Sender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendFXDataMessage(String message)  {
+    public boolean sendFXDataMessage(String message)  {
 
         try{
             rabbitTemplate.convertAndSend("FXDataExchange", "FXData", message);
+            return true;
         }catch (AmqpException e){
             logger.error("Sender error: {}", e.getMessage());
         }
+        return false;
     }
 }
 
